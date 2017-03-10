@@ -1,70 +1,44 @@
-const bodyParser = require('body-parser');
+//Include dependencies and modules
 const express = require('express');
-const mongoose = require('mongoose');
-const morgan = require('morgan');
-const path = require('path');
+const drivers = require('./routes/driversRouter');
 
-const driversRouter = require('./driversRouter');
-const {DATABASE_URL, PORT} = require('./config');
-const {Driver} = require('./models');
-
-
+//Instantiate your objects
 const app = express();
 
-//app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.static('public'));
-app.use(morgan('common'));
-app.use(bodyParser.json());
+
+
+//Config app settings
+app.set('PORT', process.env.PORT || 8080);
 
 
 
-mongoose.Promise = global.Promise;
+
+//Connect to databases
 
 
 
-let server;
-
-function runServer() {
-  return new Promise((resolve, reject) => {
-    mongoose.connect(DATABASE_URL, err => {
-    	console.log(DATABASE_URL);
-      if (err) {
-        return reject(err);
-      }
-      server = app.listen(PORT, () => {
-        console.log(`Your app is listening on port ${PORT}`);
-        resolve();
-      })
-      .on('error', err => {
-        mongoose.disconnect();
-        reject(err);
-      });
-    });
-  });
-}
-
-// like `runServer`, this function also needs to return a promise.
-// `server.close` does not return a promise on its own, so we manually
-// create one.
-function closeServer() {
-  return new Promise((resolve, reject) => {
-    console.log('Closing server');
-    server.close(err => {
-      if (err) {
-        reject(err);
-        // so we don't also call `resolve()`
-        return;
-      }
-      resolve();
-    });
-  });
-}
+//Define middleware
 
 
-// if server.js is called directly (aka, with `node server.js`), this block
-// runs. but we also export the runServer command so other code (for instance, test code) can start the server as needed.
-if (require.main === module) {
-  runServer().catch(err => console.error(err));
-};
 
-module.exports = {app, runServer, closeServer};
+
+//Define routes and request handlers
+app.get('/', function(req,res) {
+  res.send('hello world');
+});
+
+
+app.get('/drivers', drivers.getDrivers);
+
+
+
+//Start the app
+app.listen(app.get('PORT'), function() {
+  console.log(`your app is listening on PORT: ${app.get('PORT')}`);
+});
+
+
+
+
+//Optionally you can export the app as a module
+
