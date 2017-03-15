@@ -51,10 +51,10 @@ get /users/:userId/reviews
 post /users
 
 It will log in a user with username and password
-post /login
+post /users/login
 
 It will log out a user
-post /logout
+post /users/logout
 
 
 

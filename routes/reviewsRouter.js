@@ -1,20 +1,3 @@
-const express = require('express');
-const router = express.Router();
-
-const bodyParser = require('body-parser');
-const jsonParser = bodyParser.json();
-
-const {Review} = require('./models');
-
-
-
-
-
-
-
-
-
-
-
-
-module.exports = router;
+exports.createReview = function(req,res,next) {
+	res.send('you created a review');
+}

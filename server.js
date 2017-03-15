@@ -1,6 +1,8 @@
 //Include dependencies and modules
 const express = require('express');
 const drivers = require('./routes/driversRouter');
+const reviews = require('./routes/reviewsRouter');
+const user = require('./routes/userRoutes');
 
 //Instantiate your objects
 const app = express();
@@ -29,6 +31,22 @@ app.get('/', function(req,res) {
 
 
 app.get('/drivers', drivers.getDrivers);
+
+app.get('/drivers/:tagNumber', drivers.getDriver);
+
+app.get('/drivers/:tagNumber/reviews', drivers.getDriverReviews);
+
+app.post('/drivers', drivers.createDriver);
+
+app.post('/reviews', reviews.createReviews);
+
+app.get('/users/:userId/reviews', user.getUserReviews);
+
+app.post('/users', user.createUser);
+
+app.post('/users/logout', user.logout);
+
+app.post('/users/login', user.login);
 
 
 
